@@ -31,6 +31,8 @@ Same word, completely different meaning. Our AI got confused half the time. Its 
 ## Behind the Numbers: Our 2019 Research
 
 Our team published this research in the *Journal of Information Processing Systems* in October 2019, focusing specifically on Korean-language fake news detection.
+[Thesis link](https://koreascience.kr/article/JAKO201932569395106.pdf)
+![](images/thesis.png)
 
 ### The Challenge: Korean Language Complexity
 
@@ -95,6 +97,7 @@ If the headline says "Company Wins Award," the AI doesn't just look for the word
 Our 2019 research faced a critical limitation: we had to manually collect and label 12,836 Korean news articles. This made our results hard to compare with other research and difficult for others to reproduce.
 
 Now, we're planning to validate both approaches on the **Fake News Challenge (FNC-1)** dataset—a public benchmark with 50,000 English headline-body pairs used by researchers worldwide.
+[Fake News Challenge Dataset](https://github.com/FakeNewsChallenge/fnc-1)
 
 ### The Experiment Plan
 
