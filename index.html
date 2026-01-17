@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.23">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Is the Headline Lying to You?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-a74871fe4945b66d259aafc266475145.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#the-problem-when-headlines-trick-you" id="toc-the-problem-when-headlines-trick-you" class="nav-link active" data-scroll-target="#the-problem-when-headlines-trick-you">The Problem: When Headlines Trick You</a></li>
+  <li><a href="#how-our-old-ai-worked-the-keyword-detective" id="toc-how-our-old-ai-worked-the-keyword-detective" class="nav-link" data-scroll-target="#how-our-old-ai-worked-the-keyword-detective">How Our Old AI Worked: The Keyword Detective</a></li>
+  <li><a href="#why-did-it-fail-the-logic-gap" id="toc-why-did-it-fail-the-logic-gap" class="nav-link" data-scroll-target="#why-did-it-fail-the-logic-gap">Why Did It Fail? The Logic Gap</a></li>
+  <li><a href="#the-modern-solution-teaching-ai-to-pay-attention" id="toc-the-modern-solution-teaching-ai-to-pay-attention" class="nav-link" data-scroll-target="#the-modern-solution-teaching-ai-to-pay-attention">The Modern Solution: Teaching AI to Pay Attention</a></li>
+  <li><a href="#why-this-matters-to-you" id="toc-why-this-matters-to-you" class="nav-link" data-scroll-target="#why-this-matters-to-you">Why This Matters to You</a></li>
+  <li><a href="#from-pattern-matching-to-logical-thinking" id="toc-from-pattern-matching-to-logical-thinking" class="nav-link" data-scroll-target="#from-pattern-matching-to-logical-thinking">From Pattern Matching to Logical Thinking</a></li>
+  <li><a href="#the-goal-a-digital-world-you-can-trust" id="toc-the-goal-a-digital-world-you-can-trust" class="nav-link" data-scroll-target="#the-goal-a-digital-world-you-can-trust">The Goal: A Digital World You Can Trust</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Is the Headline Lying to You?</h1>
+<p class="subtitle lead">Teaching AI to Read Between the Lines</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="the-problem-when-headlines-trick-you" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-when-headlines-trick-you">The Problem: When Headlines Trick You</h2>
+<p>Imagine scrolling through Facebook and seeing: “Harry Potter Author Holding a Signing Event!” You click it, but the article is about a celebrity’s haircut. You’ve been fooled by clickbait.</p>
+<p>This happens millions of times daily. In 2019, my team built an AI to catch fake headlines. It worked well for obvious fakes but had one weakness: it couldn’t tell when a headline simply didn’t match the story.</p>
+</section>
+<section id="how-our-old-ai-worked-the-keyword-detective" class="level2">
+<h2 class="anchored" data-anchor-id="how-our-old-ai-worked-the-keyword-detective">How Our Old AI Worked: The Keyword Detective</h2>
+<p>Back in 2019, we used CNNs (Convolutional Neural Networks). Think of it like a detective with a magnifying glass looking for clues.</p>
+<p>The AI would read the headline “Apple Announces New Product,” then search the article for the word “Apple.” If it found “Orange” instead, it would flag it as fake.</p>
+<p>This worked for simple lies. But smart writers learned to trick it by using the same word with different meanings:</p>
+<ul>
+<li><strong>Headline:</strong> “Apple Breaks Sales Record”</li>
+<li><strong>Article:</strong> About apple farmers selling fruit</li>
+</ul>
+<p>Same word, completely different meaning. Our AI got confused half the time. Its accuracy was 52%—basically a coin flip.</p>
+</section>
+<section id="why-did-it-fail-the-logic-gap" class="level2">
+<h2 class="anchored" data-anchor-id="why-did-it-fail-the-logic-gap">Why Did It Fail? The Logic Gap</h2>
+<p>The problem was simple: our AI looked at tiny pieces of text instead of understanding the whole story.</p>
+<p>Imagine trying to understand a 500-page book by reading only three words at a time. You might know the book mentions “magic” and “school,” but you’d have no idea if the plot makes sense.</p>
+</section>
+<section id="the-modern-solution-teaching-ai-to-pay-attention" class="level2">
+<h2 class="anchored" data-anchor-id="the-modern-solution-teaching-ai-to-pay-attention">The Modern Solution: Teaching AI to Pay Attention</h2>
+<p>Today, we use something more powerful called a <strong>Transformer</strong>, the same technology behind ChatGPT.</p>
+<ul>
+<li><strong>Old AI (2019):</strong> Reading with a magnifying glass, three words at a time.</li>
+<li><strong>New AI (2024):</strong> Seeing the entire page at once, with colored strings connecting related ideas.</li>
+</ul>
+<p>The magic is <strong>“Attention.”</strong> When the new AI reads a headline, it doesn’t just look for matching keywords. Instead, it:</p>
+<ol type="1">
+<li>Reads the entire headline</li>
+<li>Reads the entire article</li>
+<li>Connects every word in the headline to every sentence in the article</li>
+<li>Checks if the logic flows</li>
+</ol>
+<p>If the headline says “Company Wins Award,” the AI doesn’t just look for the word “award.” It checks if the article actually describes winning, or if it secretly describes losing money.</p>
+<section id="the-new-superpower-ai-that-explains-itself" class="level3">
+<h3 class="anchored" data-anchor-id="the-new-superpower-ai-that-explains-itself">The New Superpower: AI That Explains Itself</h3>
+<p>We’re not just making AI smarter—we’re making it helpful.</p>
+<p>Old systems gave you a score: “This article is 90% fake.” Not very useful.</p>
+<p>Modern AI using Large Language Models can explain its thinking:</p>
+<blockquote class="blockquote">
+<p>“The headline claims the company won an award, but paragraph three shows they actually lost money this quarter.”</p>
+</blockquote>
+<p>Now you don’t just know something is fake—you understand <em>why</em> it’s fake and learn to spot tricks yourself.</p>
+</section>
+</section>
+<section id="why-this-matters-to-you" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-matters-to-you">Why This Matters to You</h2>
+<p>Every day, you see hundreds of headlines on Facebook, Twitter, and news sites. Most people only read the headline before sharing with friends.</p>
+<p>When headlines lie, the lies spread. They affect elections, health choices, and how you see the world.</p>
+<p>By modernizing our 2019 research, we’re building tools that can:</p>
+<ul>
+<li>Catch lies faster than human fact-checkers</li>
+<li>Explain the tricks so you learn to spot them</li>
+<li>Protect millions from dangerous misinformation</li>
+</ul>
+</section>
+<section id="from-pattern-matching-to-logical-thinking" class="level2">
+<h2 class="anchored" data-anchor-id="from-pattern-matching-to-logical-thinking">From Pattern Matching to Logical Thinking</h2>
+<p>The journey from 2019 to 2024 is about moving from simple pattern matching to actual logical understanding.</p>
+<p>Our old AI memorized answers without understanding questions. It passed easy tests but failed when things got tricky.</p>
+<p>Our new AI actually understands the material. It handles complex questions because it knows how to think, not just what to look for.</p>
+</section>
+<section id="the-goal-a-digital-world-you-can-trust" class="level2">
+<h2 class="anchored" data-anchor-id="the-goal-a-digital-world-you-can-trust">The Goal: A Digital World You Can Trust</h2>
+<p>We’re building toward a future where:</p>
+<ul>
+<li>Every suspicious headline gets checked instantly</li>
+<li>You get clear explanations instead of warning labels</li>
+<li>Fake news loses its power because nobody falls for it</li>
+</ul>
+<p>It’s not about replacing human judgment. It’s about giving you a smart assistant that helps you see through the tricks. One headline at a time, we’re making the internet a place where you can trust what you read.</p>
+<hr>
+<p><em>This post is based on research in fake news detection using deep learning, exploring the evolution from CNN-based approaches to modern Transformer architectures.</em></p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

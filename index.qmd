@@ -1,0 +1,97 @@
+---
+title: "Is the Headline Lying to You?"
+subtitle: "Teaching AI to Read Between the Lines"
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    theme: cosmo
+---
+
+## The Problem: When Headlines Trick You
+
+Imagine scrolling through Facebook and seeing: "Harry Potter Author Holding a Signing Event!" You click it, but the article is about a celebrity's haircut. You've been fooled by clickbait.
+
+This happens millions of times daily. In 2019, my team built an AI to catch fake headlines. It worked well for obvious fakes but had one weakness: it couldn't tell when a headline simply didn't match the story.
+
+## How Our Old AI Worked: The Keyword Detective
+
+Back in 2019, we used CNNs (Convolutional Neural Networks). Think of it like a detective with a magnifying glass looking for clues.
+
+The AI would read the headline "Apple Announces New Product," then search the article for the word "Apple." If it found "Orange" instead, it would flag it as fake.
+
+This worked for simple lies. But smart writers learned to trick it by using the same word with different meanings:
+
+- **Headline:** "Apple Breaks Sales Record"
+- **Article:** About apple farmers selling fruit
+
+Same word, completely different meaning. Our AI got confused half the time. Its accuracy was 52%—basically a coin flip.
+
+## Why Did It Fail? The Logic Gap
+
+The problem was simple: our AI looked at tiny pieces of text instead of understanding the whole story.
+
+Imagine trying to understand a 500-page book by reading only three words at a time. You might know the book mentions "magic" and "school," but you'd have no idea if the plot makes sense.
+
+## The Modern Solution: Teaching AI to Pay Attention
+
+Today, we use something more powerful called a **Transformer**, the same technology behind ChatGPT.
+
+- **Old AI (2019):** Reading with a magnifying glass, three words at a time.
+- **New AI (2024):** Seeing the entire page at once, with colored strings connecting related ideas.
+
+The magic is **"Attention."** When the new AI reads a headline, it doesn't just look for matching keywords. Instead, it:
+
+1. Reads the entire headline
+2. Reads the entire article
+3. Connects every word in the headline to every sentence in the article
+4. Checks if the logic flows
+
+If the headline says "Company Wins Award," the AI doesn't just look for the word "award." It checks if the article actually describes winning, or if it secretly describes losing money.
+
+### The New Superpower: AI That Explains Itself
+
+We're not just making AI smarter—we're making it helpful.
+
+Old systems gave you a score: "This article is 90% fake." Not very useful.
+
+Modern AI using Large Language Models can explain its thinking:
+
+> "The headline claims the company won an award, but paragraph three shows they actually lost money this quarter."
+
+Now you don't just know something is fake—you understand *why* it's fake and learn to spot tricks yourself.
+
+## Why This Matters to You
+
+Every day, you see hundreds of headlines on Facebook, Twitter, and news sites. Most people only read the headline before sharing with friends.
+
+When headlines lie, the lies spread. They affect elections, health choices, and how you see the world.
+
+By modernizing our 2019 research, we're building tools that can:
+
+- Catch lies faster than human fact-checkers
+- Explain the tricks so you learn to spot them
+- Protect millions from dangerous misinformation
+
+## From Pattern Matching to Logical Thinking
+
+The journey from 2019 to 2024 is about moving from simple pattern matching to actual logical understanding.
+
+Our old AI memorized answers without understanding questions. It passed easy tests but failed when things got tricky.
+
+Our new AI actually understands the material. It handles complex questions because it knows how to think, not just what to look for.
+
+## The Goal: A Digital World You Can Trust
+
+We're building toward a future where:
+
+- Every suspicious headline gets checked instantly
+- You get clear explanations instead of warning labels
+- Fake news loses its power because nobody falls for it
+
+It's not about replacing human judgment. It's about giving you a smart assistant that helps you see through the tricks. One headline at a time, we're making the internet a place where you can trust what you read.
+
+---
+
+*This post is based on research in fake news detection using deep learning, exploring the evolution from CNN-based approaches to modern Transformer architectures.*
