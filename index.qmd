@@ -28,11 +28,47 @@ This worked for simple lies. But smart writers learned to trick it by using the 
 
 Same word, completely different meaning. Our AI got confused half the time. Its accuracy was 52%—basically a coin flip.
 
-## Why Did It Fail? The Logic Gap
+## Behind the Numbers: Our 2019 Research
 
-The problem was simple: our AI looked at tiny pieces of text instead of understanding the whole story.
+Our team published this research in the *Journal of Information Processing Systems* in October 2019, focusing specifically on Korean-language fake news detection.
 
-Imagine trying to understand a 500-page book by reading only three words at a time. You might know the book mentions "magic" and "school," but you'd have no idea if the plot makes sense.
+### The Challenge: Korean Language Complexity
+
+Korean presented unique difficulties that made traditional approaches fail:
+
+1. **Shorter sentences, denser meaning**: Korean can express concepts in fewer words than English, making feature extraction harder for CNNs
+2. **Morpheme ambiguity**: The same word can have completely different meanings based on context
+3. **Agglutinative structure**: Korean combines morphemes in ways that confuse simple keyword matching
+
+### What We Built
+
+We developed a CNN-based architecture called **BCNN (Bi-CNN)** that processed headlines and article bodies separately using:
+- **Fasttext word embeddings** trained on 100K Korean articles
+- **Shallow-and-wide CNN** with multiple filter widths (3-gram convolutions)
+- **256 filters for headlines, 1024 filters for bodies** (proportional to text length)
+
+### The Results That Surprised Us
+
+Testing on 12,836 Korean news articles revealed a stark pattern:
+
+| Fake News Type | Accuracy |
+|---------------|----------|
+| **Completely fabricated** (obvious fakes) | ~94% |
+| **Semantic mismatch** (Apple company vs. fruit) | **52%** |
+| **Body-headline discrepancy** | **~60%** |
+
+The 52% accuracy on semantic mismatches was essentially random guessing. Our model could catch obvious lies but failed at subtle manipulation—exactly where human fact-checkers struggle most.
+
+### Why It Failed
+
+The CNN architecture had a fundamental limitation: **it looked at text through a narrow window** (3-5 words at a time). When processing the headline "Apple breaks sales record," it couldn't distinguish whether the article discussed:
+- Apple Inc.'s quarterly earnings
+- Korean apple farmers' harvest yields
+
+Both articles would contain the keyword "Apple," passing our detector's checks while completely misleading readers.
+
+This limitation wasn't unique to Korean—it revealed a universal problem with keyword-based approaches that would require a fundamentally different architecture to solve.
+![](images/cnn_apple.png)
 
 ## The Modern Solution: Teaching AI to Pay Attention
 
@@ -50,7 +86,54 @@ The magic is **"Attention."** When the new AI reads a headline, it doesn't just 
 
 If the headline says "Company Wins Award," the AI doesn't just look for the word "award." It checks if the article actually describes winning, or if it secretly describes losing money.
 
-### The New Superpower: AI That Explains Itself
+![](images/attention_apple.png)
+
+## What's Next: Validating the Evolution
+
+### From Korean-Only to Universal Benchmark
+
+Our 2019 research faced a critical limitation: we had to manually collect and label 12,836 Korean news articles. This made our results hard to compare with other research and difficult for others to reproduce.
+
+Now, we're planning to validate both approaches on the **Fake News Challenge (FNC-1)** dataset—a public benchmark with 50,000 English headline-body pairs used by researchers worldwide.
+
+### The Experiment Plan
+
+**Goal**: Directly compare 2019 CNN architecture vs. 2024 Transformer architecture on identical data
+
+**Why FNC-1?**
+- Public dataset anyone can reproduce
+- English language removes Korean-specific complications
+- Established baselines from 100+ research teams
+- Four-way classification (Agree/Disagree/Discuss/Unrelated) tests nuanced understanding
+
+**What We'll Test:**
+
+1. **2019 Approach (CNN + Fasttext)**
+   - Replicate our original architecture
+   - Strength: Fast inference, low compute
+   - Weakness: Misses semantic contradictions
+
+2. **2024 Approach (Transformer-based)**
+   - Fine-tune BERT/RoBERTa models
+   - Strength: Catches subtle logical inconsistencies
+   - Weakness: Requires more computational resources
+
+3. **Error Analysis**
+   - Identify specific cases where CNN fails but Transformers succeed
+   - Visualize attention patterns showing *why* Transformers understand context better
+   - Quantify the gap in detecting semantic mismatches
+
+### Why This Matters
+
+Back in 2019, proving our approach required months of data collection and labeling. Today, using public benchmarks means:
+
+- **Reproducibility**: Other researchers can verify our claims
+- **Fair comparison**: Same data, same metrics, clear winner
+- **Practical insights**: Real numbers to guide deployment decisions
+
+We're planning to open-source our implementation and publish detailed results. The goal isn't just to show that newer is better—it's to demonstrate *exactly how much better* and *in which scenarios* the improvement matters most.
+
+## The New Superpower: AI That Explains Itself
 
 We're not just making AI smarter—we're making it helpful.
 
@@ -61,18 +144,6 @@ Modern AI using Large Language Models can explain its thinking:
 > "The headline claims the company won an award, but paragraph three shows they actually lost money this quarter."
 
 Now you don't just know something is fake—you understand *why* it's fake and learn to spot tricks yourself.
-
-## Why This Matters to You
-
-Every day, you see hundreds of headlines on Facebook, Twitter, and news sites. Most people only read the headline before sharing with friends.
-
-When headlines lie, the lies spread. They affect elections, health choices, and how you see the world.
-
-By modernizing our 2019 research, we're building tools that can:
-
-- Catch lies faster than human fact-checkers
-- Explain the tricks so you learn to spot them
-- Protect millions from dangerous misinformation
 
 ## From Pattern Matching to Logical Thinking
 

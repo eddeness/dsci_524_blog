@@ -49,9 +49,10 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#the-problem-when-headlines-trick-you" id="toc-the-problem-when-headlines-trick-you" class="nav-link active" data-scroll-target="#the-problem-when-headlines-trick-you">The Problem: When Headlines Trick You</a></li>
   <li><a href="#how-our-old-ai-worked-the-keyword-detective" id="toc-how-our-old-ai-worked-the-keyword-detective" class="nav-link" data-scroll-target="#how-our-old-ai-worked-the-keyword-detective">How Our Old AI Worked: The Keyword Detective</a></li>
-  <li><a href="#why-did-it-fail-the-logic-gap" id="toc-why-did-it-fail-the-logic-gap" class="nav-link" data-scroll-target="#why-did-it-fail-the-logic-gap">Why Did It Fail? The Logic Gap</a></li>
+  <li><a href="#behind-the-numbers-our-2019-research" id="toc-behind-the-numbers-our-2019-research" class="nav-link" data-scroll-target="#behind-the-numbers-our-2019-research">Behind the Numbers: Our 2019 Research</a></li>
   <li><a href="#the-modern-solution-teaching-ai-to-pay-attention" id="toc-the-modern-solution-teaching-ai-to-pay-attention" class="nav-link" data-scroll-target="#the-modern-solution-teaching-ai-to-pay-attention">The Modern Solution: Teaching AI to Pay Attention</a></li>
-  <li><a href="#why-this-matters-to-you" id="toc-why-this-matters-to-you" class="nav-link" data-scroll-target="#why-this-matters-to-you">Why This Matters to You</a></li>
+  <li><a href="#whats-next-validating-the-evolution" id="toc-whats-next-validating-the-evolution" class="nav-link" data-scroll-target="#whats-next-validating-the-evolution">What’s Next: Validating the Evolution</a></li>
+  <li><a href="#the-new-superpower-ai-that-explains-itself" id="toc-the-new-superpower-ai-that-explains-itself" class="nav-link" data-scroll-target="#the-new-superpower-ai-that-explains-itself">The New Superpower: AI That Explains Itself</a></li>
   <li><a href="#from-pattern-matching-to-logical-thinking" id="toc-from-pattern-matching-to-logical-thinking" class="nav-link" data-scroll-target="#from-pattern-matching-to-logical-thinking">From Pattern Matching to Logical Thinking</a></li>
   <li><a href="#the-goal-a-digital-world-you-can-trust" id="toc-the-goal-a-digital-world-you-can-trust" class="nav-link" data-scroll-target="#the-goal-a-digital-world-you-can-trust">The Goal: A Digital World You Can Trust</a></li>
   </ul>
@@ -95,10 +96,55 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>Same word, completely different meaning. Our AI got confused half the time. Its accuracy was 52%—basically a coin flip.</p>
 </section>
-<section id="why-did-it-fail-the-logic-gap" class="level2">
-<h2 class="anchored" data-anchor-id="why-did-it-fail-the-logic-gap">Why Did It Fail? The Logic Gap</h2>
-<p>The problem was simple: our AI looked at tiny pieces of text instead of understanding the whole story.</p>
-<p>Imagine trying to understand a 500-page book by reading only three words at a time. You might know the book mentions “magic” and “school,” but you’d have no idea if the plot makes sense.</p>
+<section id="behind-the-numbers-our-2019-research" class="level2">
+<h2 class="anchored" data-anchor-id="behind-the-numbers-our-2019-research">Behind the Numbers: Our 2019 Research</h2>
+<p>Our team published this research in the <em>Journal of Information Processing Systems</em> in October 2019, focusing specifically on Korean-language fake news detection.</p>
+<section id="the-challenge-korean-language-complexity" class="level3">
+<h3 class="anchored" data-anchor-id="the-challenge-korean-language-complexity">The Challenge: Korean Language Complexity</h3>
+<p>Korean presented unique difficulties that made traditional approaches fail:</p>
+<ol type="1">
+<li><strong>Shorter sentences, denser meaning</strong>: Korean can express concepts in fewer words than English, making feature extraction harder for CNNs</li>
+<li><strong>Morpheme ambiguity</strong>: The same word can have completely different meanings based on context</li>
+<li><strong>Agglutinative structure</strong>: Korean combines morphemes in ways that confuse simple keyword matching</li>
+</ol>
+</section>
+<section id="what-we-built" class="level3">
+<h3 class="anchored" data-anchor-id="what-we-built">What We Built</h3>
+<p>We developed a CNN-based architecture called <strong>BCNN (Bi-CNN)</strong> that processed headlines and article bodies separately using: - <strong>Fasttext word embeddings</strong> trained on 100K Korean articles - <strong>Shallow-and-wide CNN</strong> with multiple filter widths (3-gram convolutions) - <strong>256 filters for headlines, 1024 filters for bodies</strong> (proportional to text length)</p>
+</section>
+<section id="the-results-that-surprised-us" class="level3">
+<h3 class="anchored" data-anchor-id="the-results-that-surprised-us">The Results That Surprised Us</h3>
+<p>Testing on 12,836 Korean news articles revealed a stark pattern:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Fake News Type</th>
+<th>Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Completely fabricated</strong> (obvious fakes)</td>
+<td>~94%</td>
+</tr>
+<tr class="even">
+<td><strong>Semantic mismatch</strong> (Apple company vs.&nbsp;fruit)</td>
+<td><strong>52%</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Body-headline discrepancy</strong></td>
+<td><strong>~60%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The 52% accuracy on semantic mismatches was essentially random guessing. Our model could catch obvious lies but failed at subtle manipulation—exactly where human fact-checkers struggle most.</p>
+</section>
+<section id="why-it-failed" class="level3">
+<h3 class="anchored" data-anchor-id="why-it-failed">Why It Failed</h3>
+<p>The CNN architecture had a fundamental limitation: <strong>it looked at text through a narrow window</strong> (3-5 words at a time). When processing the headline “Apple breaks sales record,” it couldn’t distinguish whether the article discussed: - Apple Inc.’s quarterly earnings - Korean apple farmers’ harvest yields</p>
+<p>Both articles would contain the keyword “Apple,” passing our detector’s checks while completely misleading readers.</p>
+<p>This limitation wasn’t unique to Korean—it revealed a universal problem with keyword-based approaches that would require a fundamentally different architecture to solve. <img src="images/cnn_apple.png" class="img-fluid"></p>
+</section>
 </section>
 <section id="the-modern-solution-teaching-ai-to-pay-attention" class="level2">
 <h2 class="anchored" data-anchor-id="the-modern-solution-teaching-ai-to-pay-attention">The Modern Solution: Teaching AI to Pay Attention</h2>
@@ -115,8 +161,54 @@ ul.task-list li input[type="checkbox"] {
 <li>Checks if the logic flows</li>
 </ol>
 <p>If the headline says “Company Wins Award,” the AI doesn’t just look for the word “award.” It checks if the article actually describes winning, or if it secretly describes losing money.</p>
-<section id="the-new-superpower-ai-that-explains-itself" class="level3">
-<h3 class="anchored" data-anchor-id="the-new-superpower-ai-that-explains-itself">The New Superpower: AI That Explains Itself</h3>
+<p><img src="images/attention_apple.png" class="img-fluid"></p>
+</section>
+<section id="whats-next-validating-the-evolution" class="level2">
+<h2 class="anchored" data-anchor-id="whats-next-validating-the-evolution">What’s Next: Validating the Evolution</h2>
+<section id="from-korean-only-to-universal-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="from-korean-only-to-universal-benchmark">From Korean-Only to Universal Benchmark</h3>
+<p>Our 2019 research faced a critical limitation: we had to manually collect and label 12,836 Korean news articles. This made our results hard to compare with other research and difficult for others to reproduce.</p>
+<p>Now, we’re planning to validate both approaches on the <strong>Fake News Challenge (FNC-1)</strong> dataset—a public benchmark with 50,000 English headline-body pairs used by researchers worldwide.</p>
+</section>
+<section id="the-experiment-plan" class="level3">
+<h3 class="anchored" data-anchor-id="the-experiment-plan">The Experiment Plan</h3>
+<p><strong>Goal</strong>: Directly compare 2019 CNN architecture vs.&nbsp;2024 Transformer architecture on identical data</p>
+<p><strong>Why FNC-1?</strong> - Public dataset anyone can reproduce - English language removes Korean-specific complications - Established baselines from 100+ research teams - Four-way classification (Agree/Disagree/Discuss/Unrelated) tests nuanced understanding</p>
+<p><strong>What We’ll Test:</strong></p>
+<ol type="1">
+<li><strong>2019 Approach (CNN + Fasttext)</strong>
+<ul>
+<li>Replicate our original architecture</li>
+<li>Strength: Fast inference, low compute</li>
+<li>Weakness: Misses semantic contradictions</li>
+</ul></li>
+<li><strong>2024 Approach (Transformer-based)</strong>
+<ul>
+<li>Fine-tune BERT/RoBERTa models</li>
+<li>Strength: Catches subtle logical inconsistencies</li>
+<li>Weakness: Requires more computational resources</li>
+</ul></li>
+<li><strong>Error Analysis</strong>
+<ul>
+<li>Identify specific cases where CNN fails but Transformers succeed</li>
+<li>Visualize attention patterns showing <em>why</em> Transformers understand context better</li>
+<li>Quantify the gap in detecting semantic mismatches</li>
+</ul></li>
+</ol>
+</section>
+<section id="why-this-matters" class="level3">
+<h3 class="anchored" data-anchor-id="why-this-matters">Why This Matters</h3>
+<p>Back in 2019, proving our approach required months of data collection and labeling. Today, using public benchmarks means:</p>
+<ul>
+<li><strong>Reproducibility</strong>: Other researchers can verify our claims</li>
+<li><strong>Fair comparison</strong>: Same data, same metrics, clear winner</li>
+<li><strong>Practical insights</strong>: Real numbers to guide deployment decisions</li>
+</ul>
+<p>We’re planning to open-source our implementation and publish detailed results. The goal isn’t just to show that newer is better—it’s to demonstrate <em>exactly how much better</em> and <em>in which scenarios</em> the improvement matters most.</p>
+</section>
+</section>
+<section id="the-new-superpower-ai-that-explains-itself" class="level2">
+<h2 class="anchored" data-anchor-id="the-new-superpower-ai-that-explains-itself">The New Superpower: AI That Explains Itself</h2>
 <p>We’re not just making AI smarter—we’re making it helpful.</p>
 <p>Old systems gave you a score: “This article is 90% fake.” Not very useful.</p>
 <p>Modern AI using Large Language Models can explain its thinking:</p>
@@ -124,18 +216,6 @@ ul.task-list li input[type="checkbox"] {
 <p>“The headline claims the company won an award, but paragraph three shows they actually lost money this quarter.”</p>
 </blockquote>
 <p>Now you don’t just know something is fake—you understand <em>why</em> it’s fake and learn to spot tricks yourself.</p>
-</section>
-</section>
-<section id="why-this-matters-to-you" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-matters-to-you">Why This Matters to You</h2>
-<p>Every day, you see hundreds of headlines on Facebook, Twitter, and news sites. Most people only read the headline before sharing with friends.</p>
-<p>When headlines lie, the lies spread. They affect elections, health choices, and how you see the world.</p>
-<p>By modernizing our 2019 research, we’re building tools that can:</p>
-<ul>
-<li>Catch lies faster than human fact-checkers</li>
-<li>Explain the tricks so you learn to spot them</li>
-<li>Protect millions from dangerous misinformation</li>
-</ul>
 </section>
 <section id="from-pattern-matching-to-logical-thinking" class="level2">
 <h2 class="anchored" data-anchor-id="from-pattern-matching-to-logical-thinking">From Pattern Matching to Logical Thinking</h2>
